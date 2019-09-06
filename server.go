@@ -55,7 +55,9 @@ func main() {
 
 	for update := range updates {
 		if update.Message != nil {
-			routes.Handler(&update)
+			routes.MessageHandler(&update)
+		} else if update.CallbackQuery != nil {
+			routes.CallbackQueryHandler(&update)
 		}
 	}
 }

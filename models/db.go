@@ -2,18 +2,11 @@ package models
 
 import (
 	"log"
-	"time"
 
 	_ "github.com/jackc/pgx/stdlib"
 	"github.com/jmoiron/sqlx"
 	app "github.com/saidamir98/go-telegram-bot-iibb/app"
 )
-
-type BaseModel struct {
-	Id        int        `json:"id" db:"id"`
-	CreatedAt *time.Time `json:"createdAt" db:"created_at"`
-	UpdatedAt *time.Time `json:"updatedAt" db:"updated_at"`
-}
 
 func InitDB() {
 	var (

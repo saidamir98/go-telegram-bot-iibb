@@ -9,35 +9,31 @@ import (
 	// "github.com/saidamir98/go-telegram-bot-iibb/middlewares"
 )
 
-// var numericKeyboard = tgbotapi.NewReplyKeyboard(
-// 	tgbotapi.NewKeyboardButtonRow(
-// 		tgbotapi.NewKeyboardButton("1"),
-// 		tgbotapi.NewKeyboardButton("2"),
-// 		tgbotapi.NewKeyboardButton("3"),
-// 	),
-// 	tgbotapi.NewKeyboardButtonRow(
-// 		tgbotapi.NewKeyboardButton("4"),
-// 		tgbotapi.NewKeyboardButton("5"),
-// 		tgbotapi.NewKeyboardButton("6"),
-// 	),
-// )
+var ReplyLangKeyboard = tgbotapi.NewReplyKeyboard(
+	tgbotapi.NewKeyboardButtonRow(
+		tgbotapi.NewKeyboardButton("/lang uz"),
+		tgbotapi.NewKeyboardButton("/lang ru"),
+		tgbotapi.NewKeyboardButton("/lang en"),
+	),
+)
 
-func Handler(update *tgbotapi.Update) {
+var InlineLangKeyboardMarkup = tgbotapi.NewInlineKeyboardMarkup(
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("uz", "/lang uz"),
+		tgbotapi.NewInlineKeyboardButtonData("ru", "/lang ru"),
+		tgbotapi.NewInlineKeyboardButtonData("en", "/lang en"),
+	),
+)
 
-	// switch update.Message.Text {
-	// case "open":
-	// 	msg.ReplyMarkup = numericKeyboard
-	// case "close":
-	// 	msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
-	// }
-
+func MessageHandler(update *tgbotapi.Update) {
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "That message has been sent to the admin")
 	msg.ReplyToMessageID = update.Message.MessageID
 
 	if update.Message.IsCommand() {
 		switch update.Message.Command() {
 		case "start":
-			msg.Text = "WELCOME!\n type /sayhi or /status."
+			msg.Text = "type /sayhi or /status."
+			msg.ReplyMarkup = InlineLangKeyboardMarkup
 		case "help":
 			msg.Text = "type /sayhi or /status."
 		case "sayhi":
@@ -52,4 +48,15 @@ func Handler(update *tgbotapi.Update) {
 	if _, err := app.Bot.Send(msg); err != nil {
 		log.Println(err)
 	}
+}
+
+func CallbackQueryHandler(update *tgbotapi.Update) {
+	log.Println(update.CallbackQuery)
+	log.Println(update.CallbackQuery.ID)
+	log.Println(update.CallbackQuery.From)
+	log.Println(update.CallbackQuery.Message)
+	log.Println(update.CallbackQuery.InlineMessageID)
+	log.Println(update.CallbackQuery.ChatInstance)
+	log.Println(update.CallbackQuery.Data)
+	log.Println(update.CallbackQuery.GameShortName)
 }
